@@ -64,4 +64,58 @@
 ## 5. Рекомендации по деплою
 1.  **Anti-Affinity:** Для обеспечения отказоустойчивости БД и Кеша необходимо использовать `podAntiAffinity` (параметр `requiredDuringSchedulingIgnoredDuringExecution`), чтобы реплики одного приложения не оказались на одной ноде.
 2.  **Resource Quotas:** В чарте приложения обязательно прописать `resources.requests` и `resources.limits`, чтобы Kubernetes корректно распределял поды по нодам.
-3.  **Horizontal Pod Autoscaler:** Для фронтенда и бекенда рекомендуется настроить HPA, так как указанные значения — это базовые требования, а не пиковые.
+
+
+## Редактор ` PlantUML `:
+
+```plantuml
+@startuml cluster-scheme
+
+footer 14.1
+scale max 1024 width
+
+skinparam nodesep 10
+skinparam ranksep 40
+
+!define KubernetesPuml https://raw.githubusercontent.com/dcasati/kubernetes-PlantUML/master/dist
+!includeurl KubernetesPuml/kubernetes_Common.puml
+!includeurl KubernetesPuml/kubernetes_Context.puml
+!includeurl KubernetesPuml/kubernetes_Simplified.puml
+!includeurl KubernetesPuml/OSS/KubernetesNode.puml
+!includeurl KubernetesPuml/OSS/KubernetesPod.puml
+
+left to right direction
+
+Cluster_Boundary(cluster, "Kubernetes Cluster") {
+  
+  Node_Boundary(worker_node1, "Worker Node 1") {
+    KubernetesPod(db1, "DB (1/3)", "")
+    KubernetesPod(cache1, "Cache (1/3)", "")
+    KubernetesPod(app1, "Backend (1-4)", "")
+  }
+  
+  Node_Boundary(worker_node2, "Worker Node 2") {
+    KubernetesPod(db2, "DB (2/3)", "")
+    KubernetesPod(cache2, "Cache (2/3)", "")
+    KubernetesPod(app2, "Backend (5-7)", "")
+    KubernetesPod(fe1, "Frontend (1-2)", "")
+  }
+  
+  Node_Boundary(worker_node3, "Worker Node 3") {
+    KubernetesPod(db3, "DB (3/3)", "")
+    KubernetesPod(cache3, "Cache (3/3)", "")
+    KubernetesPod(app3, "Backend (8-10)", "")
+    KubernetesPod(fe2, "Frontend (3-5)", "")
+  }
+}
+
+@enduml
+```
+
+
+
+
+
+
+
+4.  **Horizontal Pod Autoscaler:** Для фронтенда и бекенда рекомендуется настроить HPA, так как указанные значения — это базовые требования, а не пиковые.
