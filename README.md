@@ -64,6 +64,8 @@
 ## 5. Рекомендации по деплою
 1.  **Anti-Affinity:** Для обеспечения отказоустойчивости БД и Кеша необходимо использовать `podAntiAffinity` (параметр `requiredDuringSchedulingIgnoredDuringExecution`), чтобы реплики одного приложения не оказались на одной ноде.
 2.  **Resource Quotas:** В чарте приложения обязательно прописать `resources.requests` и `resources.limits`, чтобы Kubernetes корректно распределял поды по нодам.
+3.  **Horizontal Pod Autoscaler:** Для фронтенда и бекенда рекомендуется настроить HPA, так как указанные значения — это базовые требования, а не пиковые.
+
 
 
 ## Редактор ` PlantUML `:
@@ -111,11 +113,3 @@ Cluster_Boundary(cluster, "Kubernetes Cluster") {
 
 @enduml
 ```
-
-
-
-
-
-
-
-4.  **Horizontal Pod Autoscaler:** Для фронтенда и бекенда рекомендуется настроить HPA, так как указанные значения — это базовые требования, а не пиковые.
